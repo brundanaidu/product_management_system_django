@@ -1,0 +1,72 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<h4 align="center" >Search Results </h4>
+<div class="container">
+     <div class="row justify-content-center m-4">
+                        {% if products %}
+                            {% for product in products %}
+                    <div class="col-md-4">
+                        <div class="card m-2" style="width: 18rem;">
+                            <img src="{{product.image.url}}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <h4 class="card-text">{{ product.price }}</h4>
+                            <p class="card-text">{{ product.description}}</p>
+                             <p class="card-text mt-1">{{ product.created_at}}</p>
+                             <a href="{% url 'productDetail' product.pk %}" class="btn btn-primary">More Details</a>
+                    </div>
+                    </div>
+                    </div>
+                         {% endfor %}
+                        {% else %}
+                         <p>.....Sorry, There is no Products....</p>
+                        {% endif %}
+         <!--                            open pagination    -->
+                                <h5>Pagination</h5>
+                <div class="row m-5">
+                    <div class="col-md-12 m-3">
+                        {% if products.has_other_pages %}
+                            <ul class="pagination">
+                                {% if products.has_previous %}
+                                <li class="page-item">
+                                    <a href="?page={{ products.previous_page_number }}"><span class="page-link">Previous</span></a>
+                                </li>
+                                {% else %}
+                                <li class="page-item disabled">
+                                    <a href="?page1={{ products.paginator.number_pages}}" class="page-link">Previous</a>
+                                </li>
+                                {% endif %}
+                                  <!-- Open Number Pagination -->
+                                {% for i in products.paginator.page_range %}
+                                {% if products.number == i %}
+                                <li class="page-item active">
+                                    <a href="?page1={{ i }}" class="page-link">{{ i }}</a>
+                                </li>
+                                {% else %}
+                                <li class="page-item">
+                                    <a href="?page1={{ i }}" class="page-link">{{ i }}</a>
+                                </li>
+                                {% endif %}
+                                {% endfor %}
+                                <!-- Here Next Button is started -->
+                                 {% if products.has_next %}
+                                <li class="page-item">
+                                    <a href="?page1={{ products.next_page_number }}"><span class="page-link">Next</span></a>
+                                </li>
+                                {% else %}
+                                <li class="page-item disabled">
+                                    <a href="?page1={{ products.paginator.number_pages}}" class="page-link">Next</a>
+                                </li>
+                                {% endif %}
+
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+<!--                                close pagination-->
+                </div>
+
+</div>
+
+{% endblock %}
